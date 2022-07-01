@@ -22,13 +22,13 @@ platform :android do
   end
 
   desc "Build with different min/target SDK"
-	  lane :buildWithMinTargetSdk do
+	  lane :buildWithMinTargetSdk do |options|
 		gradle(
 		  properties: {
-			"min_sdk" => "19",
-			"target_sdk" => "31"
+			"minSdk" => "19",
+			"targetSdk" => "31"
 		  },
-		  task: "build"
+		  task: "assemble #{options[:additionalParameters]}"
 		)
   end
 
@@ -43,7 +43,7 @@ platform :android do
   	  properties: {
   		"gradle" => options[:gradle]
   	  },
-  	  task: "build"
+  	  task: "assemble #{options[:additionalParameters]}"
   	)
   end
 

@@ -8,8 +8,8 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 apply plugin: 'com.google.gms.google-services'
 ext {
-	minSdk = project.hasProperty('min_sdk') ? project.getProperty('min_sdk') : '19'
-	targetSdk = project.hasProperty('target_sdk') ? project.getProperty('target_sdk') : '31'
+	minSdk = project.hasProperty('minSdk') ? project.getProperty('minSdk') : '19'
+	targetSdk = project.hasProperty('targetSdk') ? project.getProperty('targetSdk') : '31'
 }
 android {
 	compileSdkVersion 32
