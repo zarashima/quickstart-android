@@ -17,37 +17,25 @@ default_platform(:android)
 
 platform :android do
   desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
+  	lane :test do
+    	gradle(task: "test")
+  	end
+
+  desc "Change build.gradle file content"
+    lane :changeBuildGradleContent do |options|
+      modifyFile("#{__dir__}/../#{options[:file]}", "#{options[:existingKey]}", "#{options[:modifiedValue]}")
   end
 
-  desc "Build with different min/target SDK"
-	  lane :buildWithMinTargetSdk do |options|
-		gradle(
-		  properties: {
-			"minSdk" => "19",
-			"targetSdk" => "31"
-		  },
-		  task: "assemble #{options[:additionalParameters]}"
-		)
+  def modifyFile(filePath,existingKey,modifiedValue)
+  	text = File.read(filePath)
+    new_contents = text.gsub(/#{existingKey}.*/, "#{existingKey} #{modifiedValue}")
+    puts new_contents
+    File.open(filePath, "w") {|file| file.puts new_contents }
   end
+end
 
-  desc "Build with other gradle version"
-    lane :buildWithOtherGradle do |options|
-     set_properties_value(
-        path: "./gradle/wrapper/gradle-wrapper.properties",
-        key: "distributionUrl",
-        value: "https\://services.gradle.org/distributions/gradle-#{options[:gradle]}-bin.zip"
-     )
-  	gradle(
-  	  properties: {
-  		"gradle" => options[:gradle]
-  	  },
-  	  task: "assemble #{options[:additionalParameters]}"
-  	)
-  end
-
-  desc "Build with other Xcode version"
+platform :ios do
+  desc "Change Xcode version"
   	lane :buildWithOtherXcode do |options|
   		xcversion(version: options[:xcode])
   end
